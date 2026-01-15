@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}Cửa hàng Hải sản{% endblock %}</title>
+
+  <!-- Bootstrap 5 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+
+  <!-- AOS -->
+  <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
+
+  <style>
+    body { 
+      font-family: 'Poppins', sans-serif; 
+      background: #f8f9fa; 
+    }
+
+    .navbar-brand { 
+      font-weight: 700; 
+      color: #0d6efd !important; 
+    }
+
+    footer { 
+      background: #0d6efd; 
+      color: white; 
+      padding: 15px 0; 
+    }
+
+    footer p { margin: 0; }
+
+    /* Hiệu ứng icon người dùng */
+    .nav-link i.bi-person-circle {
+      font-size: 1.4rem;
+      transition: transform 0.2s;
+    }
+
+    .nav-link:hover i.bi-person-circle {
+      transform: scale(1.1);
+    }
+
+    /* Nâng cao giao diện */
+    .navbar {
+      background: white;
+      transition: all 0.3s ease-in-out;
+    }
+
+    .navbar.scrolled {
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+    #top-header {
+    border-bottom: 3px solid #05a0e3;
+}
+
+#top-header .input-group-text {
+    border-right: none !important;
+}
+
+#top-header input.form-control {
+    border-left: none !important;
+}
+
+#top-header button.btn-danger {
+    border-radius: 0 50px 50px 0;
+}
+.navbar {
+    height: 80px;
+}
+
+body {
+    padding-top: 80px;
+}
+
+  </style>
+</head>
+
+<body>
+  <!-- ==== HEADER LỚN (LOGO + SEARCH + SOCIAL ICON) ==== -->
+<div class="container py-4 d-flex align-items-center justify-content-between" id="top-header">
+
+    <!-- LOGO + TÊN SHOP -->
+    <div class="d-flex align-items-center">
+        <img src="/static/images/logo.png" alt="Logo" style="height: 80px;">
+        <div class="ms-3">
+            <h2 class="fw-bold mb-0" style="color:#007bff;">SEAFOOD <span style="color:#ff0000;">SHOP</span></h2>
+            <p class="mb-0 fst-italic">Cung cấp sỉ & lẻ hải sản tươi sống</p>
+        </div>
+    </div>
+
+    <!-- THANH TÌM KIẾM -->
+    <form action="{{ url_for('shop.search') }}" method="GET" 
+          class="d-flex flex-grow-1 mx-5" 
+          style="max-width: 600px;">
+        <div class="input-group">
+            <span class="input-group-text bg-white border-danger">
+                <i class="bi bi-search"></i>
+            </span>
+            <input type="text" name="q" class="form-control border-danger" 
+                   placeholder="Nhập từ khóa sản phẩm muốn tìm...">
+            <button class="btn btn-danger fw-bold px-4">TÌM KIẾM</button>
+        </div>
+    </form>
+    <!-- ICON MẠNG XÃ HỘI -->
+    <div class="d-flex">
+        <a class="mx-2" href="#"><img src="/static/images/facebook.png" height="35"></a>
+        <a class="mx-2" href="#"><img src="/static/images/twitter.png" height="35"></a>
+        <a class="mx-2" href="#"><img src="/static/images/google.png" height="35"></a>
+        <a class="mx-2" href="#"><img src="/static/images/youtube.png" height="35"></a>
+    </div>
+
+</div>
+<!-- ==== END HEADER ==== -->
+
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-light fixed-top shadow-sm">
+    <div class="container">
+      <a class="navbar-brand" href="/">SeaFoodShop</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+     <div class="collapse navbar-collapse" id="navbarNav">
+    <!-- FORM TÌM KIẾM -->
+    <form action="{{ url_for('shop.search') }}" method="GET" 
+          class="d-flex ms-auto me-3" style="max-width: 280px;">
+        <input class="form-control form-control-sm" 
+               type="search" 
+               name="q" 
+               placeholder="Tìm sản phẩm..." 
+               aria-label="Search">
+        <button class="btn btn-primary btn-sm ms-2" type="submit">
+            <i class="bi bi-search"></i>
+        </button>
+    </form>
+
+    <ul class="navbar-nav align-items-center">
+          <li class="nav-item"><a class="nav-link" href="/">Trang chủ</a></li>
+          <li class="nav-item"><a class="nav-link" href="/gioithieu">Giới thiệu</a></li>
+          <li class="nav-item"><a class="nav-link" href="{{ url_for('shop.products') }}">Danh mục sản phẩm</a></li>
+          <li class="nav-item"><a class="nav-link" href="/video">Video</a></li>
+          <li class="nav-item"><a class="nav-link" href="/tintuc">Tin tức</a></li>
+          <li class="nav-item"><a class="nav-link" href="/lienhe">Liên hệ</a></li>
+
+          {% if session.get("user_id") %}
+          <!-- Người dùng đã đăng nhập -->
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="userMenu" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              <i class="bi bi-person-circle me-1"></i>
+              Xin chào, <strong>{{ session.get("full_name") or session.get("username") }}</strong>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userMenu">
+              <li><a class="dropdown-item" href="{{ url_for('shop.cart') }}">🛒 Giỏ hàng</a></li>
+              <li><a class="dropdown-item" href="{{ url_for('shop.history') }}">📜 Lịch sử mua hàng</a></li>
+              {% if session.get('role') == 'admin' %}
+              <li><a class="dropdown-item text-primary" href="{{ url_for('admin.dashboard') }}">⚙️ Quản trị</a></li>
+              {% endif %}
+              <li><a class="dropdown-item" href="{{ url_for('auth.logout') }}">🚪 Đăng xuất</a></li>
+            </ul>
+          </li>
+          {% else %}
+          <!-- Người dùng chưa đăng nhập -->
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="loginMenu" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              <i class="bi bi-person-circle"></i>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="loginMenu">
+              <li><a class="dropdown-item" href="{{ url_for('auth.login') }}">Đăng nhập</a></li>
+              <li><a class="dropdown-item" href="{{ url_for('auth.register') }}">Đăng ký</a></li>
+            </ul>
+          </li>
+          {% endif %}
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Nội dung -->
+  <main class="container my-5" style="padding-top: 90px;">
+    {% block content %}{% endblock %}
+  </main>
+
+  <!-- ===== FOOTER FULL ===== -->
+<footer class="pt-5 pb-3" style="background:#0077c8; color:white;">
+
+  <div class="container">
+
+    <div class="row">
+
+      <!-- ==== THÔNG TIN LIÊN HỆ ==== -->
+      <div class="col-md-4 mb-4">
+        <h5 class="fw-bold mb-3">THÔNG TIN LIÊN HỆ</h5>
+
+        <h4 class="fw-bold">HẢI SẢN NHANH</h4>
+
+        <p class="mt-3"><i class="bi bi-geo-alt-fill me-2"></i>
+          65 Thích Quảng Đức, P.4, Quận Phú Nhuận, TP. HCM
+        </p>
+
+        <p><i class="bi bi-telephone-forward-fill me-2"></i>090 139 1994</p>
+
+        <p><i class="bi bi-envelope-fill me-2"></i>vanhanhcr94@gmail.com</p>
+
+        <p><i class="bi bi-globe2 me-2"></i>http://haisanNhanh.vn/</p>
+
+        <div class="d-flex gap-3 mt-3">
+          <i class="bi bi-facebook fs-4"></i>
+          <i class="bi bi-twitter fs-4"></i>
+          <i class="bi bi-youtube fs-4"></i>
+          <i class="bi bi-instagram fs-4"></i>
+        </div>
+      </div>
+
+      <!-- ==== CHÍNH SÁCH ==== -->
+      <div class="col-md-3 mb-4">
+        <h5 class="fw-bold mb-3">CHÍNH SÁCH</h5>
+        <p>Hình thức thanh toán</p>
+        <p>Chính sách khuyến mãi</p>
+        <p>Chính sách mua hàng</p>
+        <p>Chính sách quy định</p>
+      </div>
+
+      <!-- ==== DANH MỤC ==== -->
+      <div class="col-md-3 mb-4">
+        <h5 class="fw-bold mb-3">DANH MỤC SẢN PHẨM</h5>
+
+        <p><a href="/" class="text-white text-decoration-none">Trang chủ</a></p>
+        <p><a href="/gioithieu" class="text-white text-decoration-none">Giới thiệu</a></p>
+        <p><a href="{{ url_for('shop.products') }}" class="text-white text-decoration-none">Sản phẩm</a></p>
+        <p><a href="/video" class="text-white text-decoration-none">Video</a></p>
+        <p><a href="/tintuc" class="text-white text-decoration-none">Tin tức</a></p>
+        <p><a href="/lienhe" class="text-white text-decoration-none">Liên hệ</a></p>
+      </div>
+
+      <!-- ==== GOOGLE MAP ==== -->
+      <div class="col-md-2">
+        <iframe 
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3919.171601239642!2d106.68351927577233!3d10.800889289345673!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x317529292b8d56af%3A0xf6f12e7260213b04!2zNjUgVGjhu4sgUXXhuq1uZyDEkOG7qWMgLCA0LCBQaOG7pyBOaOG7hywgVGjDoG5oIHBo4buRIMSQ4buTbmcgTmdo4buH!5e0!3m2!1svi!2s!4v1700000000000!5m2!1svi!2s" 
+          width="100%" 
+          height="200" 
+          style="border:0;border-radius:8px;" 
+          allowfullscreen="" 
+          loading="lazy">
+        </iframe>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- COPYRIGHT -->
+  <div class="text-center mt-4 pt-3" style="border-top: 1px solid rgba(255,255,255,0.3);">
+    © 2025 SEAFOOD SHOP - Designed by NHT
+  </div>
+
+</footer>
+<!-- ===== END FOOTER ===== -->
+
+
+  <!-- Bootstrap Bundle JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- AOS JS -->
+  <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+  <script>
+    AOS.init();
+  </script>
+
+  <!-- Hiệu ứng navbar khi cuộn -->
+  <script>
+    window.addEventListener("scroll", function() {
+      const nav = document.querySelector(".navbar");
+      if (window.scrollY > 30) {
+        nav.classList.add("scrolled");
+      } else {
+        nav.classList.remove("scrolled");
+      }
+    });
+  </script>
+
+  <!-- Cuộn mượt khi bấm vào các liên kết nội bộ -->
+  <script>
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        document.querySelector(this.getAttribute('href')).scrollIntoView({
+          behavior: 'smooth'
+        });
+      });
+    });
+  </script>
+
+</body>
+</html>

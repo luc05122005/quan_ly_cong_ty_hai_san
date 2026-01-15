@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% block title %}Sửa sản phẩm{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+
+  <h2 class="mb-4">Sửa sản phẩm</h2>
+
+  <form method="POST">
+
+    <div class="mb-3">
+      <label class="form-label">Tên sản phẩm</label>
+      <input type="text" name="name" class="form-control" value="{{ product.name }}" required>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Giá bán (VND)</label>
+      <input type="number" name="price" class="form-control" value="{{ product.price }}" required>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Số lượng tồn kho</label>
+      <input type="number" name="stock" class="form-control" value="{{ product.stock }}" required>
+    </div>
+
+    <div class="mb-3">
+    <label for="image_url" class="form-label">Link ảnh</label>
+    <input type="text" class="form-control" id="image_url" name="image_url" value="{{ product.get('image', '') }}">
+</div>
+
+<div class="mb-3">
+    <label for="image" class="form-label">Upload ảnh</label>
+    <input type="file" class="form-control" id="image" name="image">
+</div>
+
+{% if product.get('image') %}
+<img src="{{ url_for('static', filename='uploads/' ~ product.get('image')) }}" class="img-thumbnail mt-2" style="max-width: 150px;">
+{% endif %}
+
+    <!-- ⭐⭐ THÊM PHẦN CATEGORY NGAY TẠI ĐÂY ⭐⭐ -->
+    <div class="mb-3">
+      <label class="form-label">Loại sản phẩm</label>
+      <select name="category" class="form-select" required>
+          <option value="tom" {% if product.category == 'tom' %}selected{% endif %}>Tôm</option>
+          <option value="cua" {% if product.category == 'cua' %}selected{% endif %}>Cua</option>
+          <option value="muc" {% if product.category == 'muc' %}selected{% endif %}>Mực</option>
+          <option value="oc" {% if product.category == 'oc' %}selected{% endif %}>Ốc</option>
+      </select>
+    </div>
+    <!-- ⭐⭐ END CATEGORY ⭐⭐ -->
+
+
+    <button class="btn btn-primary">Lưu thay đổi</button>
+    <a href="{{ url_for('admin.products') }}" class="btn btn-secondary">Hủy</a>
+
+  </form>
+
+</div>
+{% endblock %}

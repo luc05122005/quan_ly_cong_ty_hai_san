@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block title %}Chi tiết hóa đơn{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="card shadow-sm rounded-4">
+        <div class="card-header bg-primary text-white rounded-top-4">
+            <h4 class="mb-0">Hóa đơn #{{ invoice._id }}</h4>
+            <small>Ngày tạo: {{ invoice.created_at.strftime('%d/%m/%Y %H:%M') }}</small>
+        </div>
+        <div class="card-body">
+            <p><strong>Khách hàng:</strong> {{ invoice.user_name }}</p>
+            <p><strong>Địa chỉ giao hàng:</strong> {{ invoice.address }}</p>
+            <p><strong>Phương thức thanh toán:</strong> {{ invoice.payment_method|capitalize }}</p>
+
+            <h5 class="mt-4">Sản phẩm</h5>
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover align-middle">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Tên SP</th>
+                            <th>Giá</th>
+                            <th>Số lượng</th>
+                            <th>Thành tiền</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for p in invoice.products %}
+                        <tr>
+                            <td>{{ p.name }}</td>
+                            <td>{{ "{:,}".format(p.price) }} VNĐ</td>
+                            <td>{{ p.quantity }}</td>
+                            <td>{{ "{:,}".format(p.total) }} VNĐ</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="d-flex justify-content-end mt-3">
+                <h5>Tổng tiền: <span class="text-danger">{{ "{:,}".format(invoice.total_amount) }} VNĐ</span></h5>
+            </div>
+
+            <a href="{{ url_for('admin.invoices') }}" class="btn btn-secondary mt-3">← Quay lại danh sách</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

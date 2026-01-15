@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block title %}Đăng nhập{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-md-4">
+      <div class="card shadow-lg p-4 rounded-4">
+        <h3 class="text-center text-primary mb-4 fw-bold">Đăng nhập</h3>
+
+        <!-- Flash messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            {% for category, msg in messages %}
+              <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                {{ msg }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+              </div>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
+
+        <form method="POST">
+          <div class="mb-3">
+            <label class="form-label fw-semibold">Tên đăng nhập</label>
+            <input type="text" name="username" class="form-control" placeholder="Nhập tên đăng nhập" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label fw-semibold">Mật khẩu</label>
+            <input type="password" name="password" class="form-control" placeholder="Nhập mật khẩu" required>
+          </div>
+          <button type="submit" class="btn btn-primary w-100 btn-lg">
+            <i class="bi bi-box-arrow-in-right me-2"></i> Đăng nhập
+          </button>
+        </form>
+
+        <p class="text-center mt-3">
+          Chưa có tài khoản?
+          <a href="{{ url_for('auth.register') }}" class="text-decoration-none fw-semibold">Đăng ký tại đây</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CSS gradient button + hover -->
+<style>
+.btn-primary {
+  background: linear-gradient(90deg, #0d6efd, #6610f2);
+  border: none;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+</style>
+{% endblock %}

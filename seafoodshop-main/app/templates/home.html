@@ -1,0 +1,123 @@
+{% extends "base.html" %}
+{% block title %}Trang chủ - Hải sản nhanh{% endblock %}
+
+{% block content %}
+
+<style>
+  .hero-img {
+    height: 55vh;
+    object-fit: cover;
+    filter: brightness(80%);
+  }
+  .product-card:hover {
+    transform: translateY(-6px);
+    transition: 0.3s ease;
+  }
+  .product-card img {
+    height: 230px;
+    object-fit: cover;
+  }
+</style>
+
+<!-- HERO BANNER + CAPTION -->
+<div id="heroCarousel" class="carousel slide" data-bs-ride="carousel">
+  <div class="carousel-inner">
+
+    <div class="carousel-item active">
+      <img src="{{ url_for('static', filename='images/banner1.jpg') }}" class="d-block w-100 hero-img">
+      <div class="carousel-caption d-none d-md-block">
+        <h2 class="fw-bold">Hải sản tươi sống mỗi ngày</h2>
+        <p>Giao nhanh 30 phút – Giá tốt nhất thị trường</p>
+      </div>
+    </div>
+
+    <div class="carousel-item">
+      <img src="{{ url_for('static', filename='images/banner2.jpg') }}" class="d-block w-100 hero-img">
+      <div class="carousel-caption d-none d-md-block">
+        <h2 class="fw-bold">Nguồn hải sản sạch</h2>
+        <p>Đánh bắt từ Phan Thiết – Nha Trang – Vũng Tàu</p>
+      </div>
+    </div>
+
+    <div class="carousel-item">
+      <img src="{{ url_for('static', filename='images/banner3.jpg') }}" class="d-block w-100 hero-img">
+      <div class="carousel-caption d-none d-md-block">
+        <h2 class="fw-bold">Cam kết chất lượng</h2>
+        <p>Tươi 100% — Không qua đông lạnh</p>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Nút điều hướng -->
+  <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
+    <span class="carousel-control-prev-icon"></span>
+  </button>
+  <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
+    <span class="carousel-control-next-icon"></span>
+  </button>
+</div>
+
+<!-- GIỚI THIỆU -->
+<section class="container text-center my-5">
+  <h2 class="fw-bold text-primary">SeaFoodShop</h2>
+  <p class="text-muted fs-5">
+    Chuyên cung cấp hải sản tươi sống – giao tận nơi – giá sỉ & lẻ.
+    Tươi ngon từ biển cả đến bàn ăn của bạn.
+  </p>
+</section>
+
+<!-- SẢN PHẨM NỔI BẬT -->
+<section class="container">
+  <h3 class="text-center text-primary mb-4">SẢN PHẨM NỔI BẬT</h3>
+
+  <div class="row g-4">
+
+    <div class="col-md-4">
+      <div class="card shadow-sm border-0 rounded-4 product-card">
+        <img src="{{ url_for('static', filename='images/oc_huong.jpg') }}" class="card-img-top rounded-top-4">
+        <div class="card-body text-center">
+          <h5>Ốc Hương</h5>
+          <p class="text-danger fw-bold fs-5">350.000đ/kg</p>
+          <a href="{{ url_for('shop.products') }}" class="btn btn-primary btn-sm">Xem chi tiết</a>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="card shadow-sm border-0 rounded-4 product-card">
+        <img src="{{ url_for('static', filename='images/tom_hum.jpg') }}" class="card-img-top rounded-top-4">
+        <div class="card-body text-center">
+          <h5>Tôm Hùm</h5>
+          <p class="text-danger fw-bold fs-5">1.200.000đ/kg</p>
+          <a href="{{ url_for('shop.products') }}" class="btn btn-primary btn-sm">Xem chi tiết</a>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="card shadow-sm border-0 rounded-4 product-card">
+        <img src="{{ url_for('static', filename='images/cua.jpg') }}" class="card-img-top rounded-top-4">
+        <div class="card-body text-center">
+          <h5>Cua Biển</h5>
+          <p class="text-danger fw-bold fs-5">400.000đ/kg</p>
+          <a href="{{ url_for('shop.products') }}" class="btn btn-primary btn-sm">Xem chi tiết</a>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</section>
+
+<!-- HOTLINE -->
+<section class="mt-5">
+  <div class="p-3 text-white text-center bg-danger fs-5 fw-bold">
+    Hotline: 0903 96 2345 — Giao nhanh trong 30 phút — Tươi 100%
+  </div>
+</section>
+
+{% endblock %}

@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}Sửa hóa đơn{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+
+  <h2 class="mb-4">Sửa hóa đơn</h2>
+
+  <form method="POST">
+
+    <div class="mb-3">
+      <label class="form-label">Tên khách hàng</label>
+      <input name="customer_name" class="form-control" value="{{ invoice.customer_name }}" required>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Tổng tiền</label>
+      <input name="total" type="number" class="form-control" value="{{ invoice.total }}" required>
+    </div>
+
+    <button class="btn btn-primary">Lưu thay đổi</button>
+    <a class="btn btn-secondary" href="{{ url_for('admin.invoices') }}">Hủy</a>
+
+  </form>
+</div>
+{% endblock %}

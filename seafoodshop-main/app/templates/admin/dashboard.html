@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% block title %}Dashboard quản trị{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-4">
+
+  <h2 class="text-center text-primary mb-4">Bảng điều khiển Admin</h2>
+  <p class="text-center mb-4">Chào mừng admin quay lại hệ thống.</p>
+
+  <div class="row g-3">
+    <div class="col-md-3">
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <h6 class="text-muted">Tổng khách hàng</h6>
+          <h3>{{ total_users }}</h3>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-3">
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <h6 class="text-muted">Tổng sản phẩm</h6>
+          <h3>{{ total_products }}</h3>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-3">
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <h6 class="text-muted">Tổng hóa đơn</h6>
+          <h3>{{ total_invoices }}</h3>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-3">
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <h6 class="text-muted">Ghi nhận kho</h6>
+          <h3>{{ total_stock }}</h3>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="my-4">
+
+  <div class="card shadow-sm">
+    <div class="card-body">
+      <h5 class="card-title">Chức năng nhanh</h5>
+      <div class="d-flex gap-2 flex-wrap">
+        <a href="{{ url_for('admin.invoices') }}" class="btn btn-outline-primary">Quản lý hóa đơn</a>
+        <a href="{{ url_for('admin.products') }}" class="btn btn-outline-primary">Quản lý sản phẩm</a>
+        <a href="{{ url_for('admin.stock') }}" class="btn btn-outline-primary">Quản lý kho</a>
+      </div>
+    </div>
+  </div>
+
+</div>
+{% endblock %}

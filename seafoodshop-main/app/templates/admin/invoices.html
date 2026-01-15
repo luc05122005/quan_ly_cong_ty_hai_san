@@ -1,0 +1,117 @@
+{% extends "base.html" %}
+
+{% block title %}Danh sách hóa đơn{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="mb-4">Danh sách hóa đơn</h2>
+<!-- ==== FORM LỌC VÀ THỐNG KÊ ==== -->
+    <div class="card mb-4 shadow-sm">
+        <div class="card-header bg-primary text-white">
+            <h5 class="mb-0">Bộ lọc và thống kê hóa đơn</h5>
+        </div>
+        <div class="card-body">
+            <form method="get" action="{{ url_for('admin.invoices') }}" class="row g-3 align-items-end">
+                <div class="col-md-3">
+                    <label class="form-label">Ngày bắt đầu:</label>
+                    <input type="date" name="start_date" class="form-control" value="{{ request.args.get('start_date', '') }}">
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">Ngày kết thúc:</label>
+                    <input type="date" name="end_date" class="form-control" value="{{ request.args.get('end_date', '') }}">
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">Xem theo:</label>
+                    <select name="period_type" class="form-select">
+                        <option value="day" {% if request.args.get('period_type')=='day' %}selected{% endif %}>Ngày</option>
+                        <option value="month" {% if request.args.get('period_type')=='month' %}selected{% endif %}>Tháng</option>
+                        <option value="quarter" {% if request.args.get('period_type')=='quarter' %}selected{% endif %}>Quý</option>
+                        <option value="year" {% if request.args.get('period_type')=='year' %}selected{% endif %}>Năm</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <button type="submit" class="btn btn-primary w-100">
+                        <i class="bi bi-funnel-fill"></i> Lọc & Thống kê
+                    </button>
+                </div>
+            </form>
+
+            <!-- BIỂU ĐỒ CHART.JS -->
+            <div class="mt-4">
+                <canvas id="invoiceChart" height="300"></canvas>
+            </div>
+
+    <!-- ==== BẢNG DANH SÁCH ==== -->
+    <div class="table-responsive">
+        <table class="table table-striped table-hover align-middle">
+            <thead class="table-dark">
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Khách hàng</th>
+                    <th scope="col">Ngày tạo</th>
+                    <th scope="col">Tổng tiền</th>
+                    <th scope="col">Hành động</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for inv in invoices %}
+                <tr>
+                    <th scope="row">{{ loop.index }}</th>
+                    <td>{{ inv.user_name }}</td>
+                    <td>{{ inv.created_at.strftime('%d/%m/%Y %H:%M') if inv.created_at else '-' }}</td>
+                    <td>{{ "{:,.0f}".format(inv.total_amount) if inv.total_amount else '-' }} đ</td>
+                    <td>
+                        <a href="{{ url_for('admin.view_invoice', invoice_id=inv._id) }}" class="btn btn-sm btn-success me-1">
+                            <i class="bi bi-eye"></i> Xem
+                        </a>
+                        <form action="{{ url_for('admin.delete_invoice', invoice_id=inv._id) }}" method="POST" class="d-inline">
+                            <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Bạn có chắc muốn xóa?')">
+                                <i class="bi bi-trash"></i> Xóa
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+            
+        </table>
+    </div>
+</div>
+<!-- ====================== -->
+<!-- 🔥 SCRIPT VẼ BIỂU ĐỒ 🔥 -->
+<!-- ====================== -->
+
+<!-- NẠP CHARTJS -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+    // Nhận dữ liệu từ Flask (có safe để tránh lỗi underline)
+    const chartLabels = ({{ chart_labels | tojson | safe }});
+    const chartData = ({{ chart_data | tojson | safe }});
+
+    console.log("Labels:", chartLabels);
+    console.log("Data:", chartData);
+
+    const ctx = document.getElementById("invoiceChart");
+
+    new Chart(ctx, {
+        type: "line",
+        data: {
+            labels: chartLabels,
+            datasets: [{
+                label: "Doanh thu",
+                data: chartData,
+                borderWidth: 3,
+                borderColor: "rgba(54, 162, 235, 1)",
+                backgroundColor: "rgba(54, 162, 235, 0.3)",
+                tension: 0.4
+            }]
+        },
+        options: {
+            responsive: true
+        }
+    });
+</script>
+
+{% endblock %}
+

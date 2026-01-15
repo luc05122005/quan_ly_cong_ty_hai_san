@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+{% block title %}Thêm sản phẩm{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+
+  <h2 class="mb-4">Thêm sản phẩm mới</h2>
+
+  <form method="POST" enctype="multipart/form-data">
+
+    <div class="mb-3">
+      <label class="form-label">Tên sản phẩm</label>
+      <input type="text" name="name" class="form-control" required>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Giá bán (VND)</label>
+      <input type="number" name="price" class="form-control" required>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Số lượng tồn kho</label>
+      <input type="number" name="stock" class="form-control" required>
+    </div>
+
+    <div class="mb-3">
+    <label class="form-label">Link ảnh (URL)</label>
+    <input type="text" name="image_url" class="form-control" placeholder="Dán link ảnh vào đây">
+</div>
+
+<div class="mb-3">
+    <label class="form-label">Upload ảnh</label>
+    <input type="file" name="image" class="form-control">
+</div>
+
+<div class="mb-3">
+    <img id="preview" class="img-thumbnail mt-2" style="max-width: 150px; display: none;">
+</div>
+
+    <!-- ⭐⭐ THÊM CATEGORY Ở ĐÂY ⭐⭐ -->
+  <div class="mb-3">
+    <label class="form-label">Loại sản phẩm</label>
+    <select name="category" class="form-select" required>
+        <option value="tom">Tôm</option>
+        <option value="cua">Cua</option>
+        <option value="muc">Mực</option>
+        <option value="oc">Ốc</option>
+    </select>
+  </div>
+  <!-- ⭐⭐ END CATEGORY ⭐⭐ -->
+
+    <button class="btn btn-primary">Thêm sản phẩm</button>
+    <a href="{{ url_for('admin.products') }}" class="btn btn-secondary">Hủy</a>
+
+  </form>
+
+</div>
+{% endblock %}
+<script>
+    const imageInput = document.querySelector('input[name="image"]');
+    const imageUrlInput = document.querySelector('input[name="image_url"]');
+    const preview = document.getElementById('preview');
+
+    function updatePreview(src) {
+        if (src) {
+            preview.src = src;
+            preview.style.display = 'block';
+        } else {
+            preview.style.display = 'none';
+        }
+    }
+
+    imageInput.addEventListener('change', () => {
+        const file = imageInput.files[0];
+        if (file) {
+            updatePreview(URL.createObjectURL(file));
+        } else {
+            updatePreview(imageUrlInput.value);
+        }
+    });
+
+    imageUrlInput.addEventListener('input', () => {
+        if (!imageInput.files.length) {
+            updatePreview(imageUrlInput.value);
+        }
+    });
+</script>
+

@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}Kết quả tìm kiếm{% endblock %}
+
+{% block content %}
+<h3 class="mb-4">Kết quả cho: "{{ keyword }}"</h3>
+
+{% if results %}
+<div class="row">
+  {% for p in results %}
+  <div class="col-md-3 mb-4">
+    <div class="card shadow-sm">
+      <img src="{{ p.image }}" class="card-img-top" alt="{{ p.name }}">
+      <div class="card-body">
+        <h5 class="card-title">{{ p.name }}</h5>
+        <p class="card-text">{{ p.price }}₫</p>
+        <a href="{{ url_for('shop.products', category=p.category) }}" class="btn btn-primary btn-sm">
+    Xem sản phẩm trong danh mục
+</a>
+
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% else %}
+<p class="text-muted">Không tìm thấy sản phẩm nào phù hợp.</p>
+{% endif %}
+
+{% endblock %}
